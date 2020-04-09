@@ -7,97 +7,109 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/04c8e21204.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-    <div id="header" class="header">
-        <div></div>
-        <button class="icon-button"><span class="fas fa-th-large"></span></button>
-    </div>
-    <div id="menu" class="menu">
-        <div class="menu-item"><span class="fas fa-home"></span>Home</div>
-        <div class="menu-item"><span class="fas fa-users"></span>Clients</div>
-    </div>
-    <div id="content" class="content">
-        <div class="card">
-            <div class="card-title">
-                <span>Novo Cartão</span>
-                <span class="fas fa-times"></span>
-            </div>
-            <div class="card-content">
-                <input id="nome" name="nome" class="input" type="text" placeholder="Nome">
-                <input id="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
-                <input id="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
-            </div>
-            <div class="card-button">
-                <div class="button">
-                    <span>Salvar</span>
-                </div>
-            </div>
+    <div id="app">
+        <div id="header" class="header">
+            <div></div>
+            <button class="icon-button"><span class="fas fa-th-large"></span></button>
         </div>
-        <div class="card">
-            <div class="card-title">
-                <span>Novo Cartão</span>
-                <span class="fas fa-times"></span>
-            </div>
-            <div class="card-content">
-                <input id="nome" name="nome" class="input" type="text" placeholder="Nome">
-                <input id="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
-                <input id="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
-            </div>
-            <div class="card-button">
-                <div class="button">
-                    <span>Salvar</span>
-                </div>
-            </div>
+        <div id="menu" class="menu">
+            <div class="menu-item"><span class="fas fa-home"></span>Home</div>
+            <div class="menu-item"><span class="fas fa-users"></span>Clients</div>
         </div>
-        <div class="card">
-            <div class="card-title">
-                <span>Novo Cartão</span>
-                <span class="fas fa-times"></span>
-            </div>
-            <div class="card-content">
-                <input id="nome" name="nome" class="input" type="text" placeholder="Nome">
-                <input id="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
-                <input id="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
-            </div>
-            <div class="card-button">
-                <div class="button">
-                    <span>Salvar</span>
+        <div id="content" class="content">
+            <div class="card" v-if="mostrarCartao">
+                <div class="card-title">
+                    <span>Formulário</span>
+                    <span class="fas fa-times" @click="close()"></span>
+                </div>
+                <div class="card-content">
+                    <input id="nome" v-model="nome" name="nome" class="input" type="text" placeholder="Nome">
+                    <input id="nascimento" v-model="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
+                    <input id="profissao" v-model="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
+                </div>
+                <div class="card-button">
+                    <div @click="save()" class="button">
+                        <span>Salvar</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-title">
-                <span>Novo Cartão</span>
-                <span class="fas fa-times"></span>
-            </div>
-            <div class="card-content">
-                <input id="nome" name="nome" class="input" type="text" placeholder="Nome">
-                <input id="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
-                <input id="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
-            </div>
-            <div class="card-button">
-                <div class="button">
-                    <span>Salvar</span>
+            <div>
+                <div class="table-header">
+                    <div>Nome</div>
+                    <div>Nascimento</div>
+                    <div>Profissão</div>
+                </div>
+                <div class="table-body" v-for="p in pessoas">
+                    <span>{{p.nome}}</span>
+                    <span>{{p.nascimento}}</span>
+                    <span>{{p.profissao}}</span>
+                    <div>
+                        <span class="fas fa-edit" @click="edit(p)"></span>
+                        <span class="fas fa-trash" @click="remove(p)"></span>
+                    </div>
+                    
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-title">
-                <span>Novo Cartão</span>
-                <span class="fas fa-times"></span>
-            </div>
-            <div class="card-content">
-                <input id="nome" name="nome" class="input" type="text" placeholder="Nome">
-                <input id="nascimento" name="nascimento" class="input" type="text" placeholder="Data Nascimento">
-                <input id="profissao" name="profissao" class="input" type="text" placeholder="Profissão">
-            </div>
-            <div class="card-button">
-                <div class="button">
-                    <span>Salvar</span>
-                </div>
-            </div>
+            
         </div>
     </div>
+    
+    <script>
+        var vue = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    nome: '',
+                    nascimento: '',
+                    profissao: '',
+                    mostrarCartao: true,
+                    id: 0,
+                    editId: 9999,
+                    pessoas: [],
+                }
+            },
+            methods: {
+                save() {
+                    if (this.editId < this.id) {
+                        var pessoa = this.pessoas.find(p => p.id === this.editId);
+                        var pessoaIndex = this.pessoas.indexOf(pessoa);
+                        pessoa.nome = this.nome;
+                        pessoa.nascimento = this.nascimento;
+                        pessoa.profissao = this.profissao;
+                        this.pessoas[pessoaIndex] = pessoa;
+                        this.editId = 9999;
+                    } else {
+                        var pessoa = {
+                            id: this.id,
+                            nome: this.nome,
+                            nascimento: this.nascimento,
+                            profissao: this.profissao
+                        }
+                        this.pessoas.push(pessoa);
+                        this.id = this.id + 1;
+                    }                    
+                    this.nome = '';
+                    this.nascimento = '';
+                    this.profissao = '';
+                    console.log(this.pessoas);
+                },
+                remove(pessoa) {
+                    this.pessoas.splice(this.pessoas.indexOf(pessoa), 1);
+                },
+                edit(pessoa) {
+                    this.editId = pessoa.id;
+                    this.nome = pessoa.nome;
+                    this.nascimento = pessoa.nascimento;
+                    this.profissao = pessoa.profissao;
+                },
+                close() {
+                    this.mostrarCartao = false;
+                }
+            }
+        })
+    </script>
 </body>
 </html>
