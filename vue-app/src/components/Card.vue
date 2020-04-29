@@ -24,9 +24,7 @@
       />
     </div>
     <div class="card-button">
-      <div @click="save()" class="button">
-        <span>Salvar</span>
-      </div>
+      <app-button @action="save()" :value="buttonValue" mode="low" />
     </div>
   </div>
 </template>
@@ -40,63 +38,22 @@ export default {
   },
   props: {
     title: String,
-    label1: String
+    label1: String,
+    buttonValue: String
   },
   methods: {
-    save () {}
+    save () {
+      console.log('Salvando dentro do card')
+    },
+    action () {
+      console.log('Emitindo ação dentro do card')
+      this.$emit('action')
+    }
   }
 }
 </script>
 
 <style>
-/* Button */
-
-.icon-button {
-  margin: 5px;
-  margin-right: 15px;
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  border: 0;
-  background: #5f857b;
-  color: #fff;
-  box-shadow: 0px 3px 5px #333;
-  cursor: pointer;
-  outline: none;
-}
-
-.icon-button:active,
-.button:active {
-  box-shadow: inset 0px 3px 5px #333;
-}
-
-.icon-button:active .fas,
-.button:active span {
-  transform: translateY(1px);
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  user-select: none;
-  cursor: pointer;
-
-  border-radius: 15px;
-  width: 100px;
-  height: 40px;
-
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  box-shadow: 1px 2px 8px #333;
-
-  color: #fff;
-  font-variant: small-caps;
-
-  animation: animated-background 15s ease infinite;
-}
-
 /* Input */
 
 .input {

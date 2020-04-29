@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Card title="Teste" label1="Nascimento"/>
+    <app-card title="Teste" label1="Nascimento" buttonValue="Clients" @action="buttonAction()"/>
     <div>
       <div class="table-header">
         <div>Nome</div>
@@ -21,10 +21,8 @@
 </template>
 
 <script>
-import Card from '../components/Card'
 
 export default {
-  components: { Card },
   data () {
     return {
       nome: '',
@@ -36,6 +34,9 @@ export default {
     }
   },
   methods: {
+    buttonAction () {
+      console.log('Ação realizada pelo component Clients.vue')
+    },
     save () {
       var pessoa
       if (this.editId < this.id) {
@@ -104,20 +105,6 @@ export default {
     align-items: center;
     padding: 5px 0px;
 } */
-
-/* Animations */
-
-@keyframes animated-background {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
 /* Media Querys (Responsividade) */
 
